@@ -23,24 +23,26 @@ import (
 	"github.com/netbox-community/netbox-operator/pkg/netbox/utils"
 )
 
-func (r *NetboxClient) GetTagDetails(name *string, slug *string) (*models.Tag, error) {
-	request := extras.NewExtrasTagsListParams().WithName(name).WithSlug(slug)
-	response, err := r.Tags.ExtrasTagsList(request, nil)
+func (r *NetboxClient) GetTagDetails(name string, slug string) (*models.Tag, error) {
+	var request *extras.ExtrasTagsListParams
+	if name != "" {
+		request = extras.NewExtrasTagsListParams().WithName(&name)
+	}
+	if slug != "" {
+		request = extras.NewExtrasTagsListParams().WithSlug(&slug)
+	}
+
+	if name == "" && slug == "" {
+		return nil, utils.NetboxError("either name or slug must be provided to fetch Tag details", nil)
+	}
+	// response, err := r.Tags.ExtrasTagsList(request, nil)
+	response, err := r.Extras.ExtrasTagsList(request, nil)
 	if err != nil {
 		return nil, utils.NetboxError("failed to fetch Tag details", err)
 	}
 
-	var display string
-	if name != nil && *name != "" {
-		display = *name
-	} else if slug != nil && *slug != "" {
-		display = *slug
-	} else {
-		display = "<unknown>"
-	}
-
 	if len(response.Payload.Results) == 0 {
-		return nil, utils.NetboxNotFoundError("tag '" + display + "'")
+		return nil, utils.NetboxNotFoundError("tag '" + name + "/" + slug + "'")
 	}
 
 	tag := response.Payload.Results[0]

@@ -44,7 +44,6 @@ type NetboxClient struct {
 	Tenancy interfaces.TenancyInterface
 	Extras  interfaces.ExtrasInterface
 	Dcim    interfaces.DcimInterface
-	Tags    interfaces.TagsInterface
 }
 
 // Checks that the Netbox host is properly configured for the operator to function.
