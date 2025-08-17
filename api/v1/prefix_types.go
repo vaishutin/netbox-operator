@@ -42,6 +42,12 @@ type PrefixSpec struct {
 	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field 'tenant' is immutable"
 	Tenant string `json:"tenant,omitempty"`
 
+	// The NetBox Tenant to be assigned to this resource in NetBox. Use the `name` value instead of the `slug` value
+	// Field is immutable, not required
+	// Example: "Initech" or "Cyberdyne Systems"
+	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field 'tenant' is immutable"
+	Tenant string `json:"tenant,omitempty"`
+
 	// The NetBox Custom Fields that should be added to the resource in NetBox.
 	// Note that currently only Text Type is supported (GitHub #129)
 	// More info on NetBox Custom Fields:
