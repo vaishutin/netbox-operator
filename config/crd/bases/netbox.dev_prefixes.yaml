@@ -121,28 +121,6 @@ spec:
                 x-kubernetes-validations:
                 - message: Field 'tenant' is immutable
                   rule: self == oldSelf
-              tags:
-                description: |-
-                  Список тегов, которые будут назначены ресурсу в NetBox.
-                  Каждый тег должен содержать поле `name`.
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: name tag
-                    slug:
-                      type: string
-                      description: slug tag1
-                  x-kubernetes-validations:
-                    - message: One of the fields `name` or `slug` must be set
-                      rule: has(self.name) || has(self.slug)
-                  required:
-                    - name
-                example:
-                  - name: tag1
-                  - name: tag2
             required:
             - prefix
             type: object
