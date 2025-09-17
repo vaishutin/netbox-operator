@@ -202,7 +202,7 @@ func (r *IpAddressReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
 	// 3. unlock lease of parent prefix
 	if ll != nil {
-		ll.Unlock()
+		ll.UnlockWithRetry(ctx)
 	}
 
 	// 4. update status fields
@@ -287,6 +287,7 @@ func generateNetboxIpAddressModelFromIpAddressSpec(spec *netboxv1.IpAddressSpec,
 			Custom:      netboxCustomFields,
 			Description: req.NamespacedName.String() + " // " + spec.Description,
 			Tenant:      spec.Tenant,
+			Tags:        convertAPITagsToModelTags(spec.Tags),
 		},
 	}, nil
 }
